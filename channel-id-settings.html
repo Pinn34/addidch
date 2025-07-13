@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Channel ID Settings</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      background-color: #f0f4ff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .card {
+      background-color: white;
+      padding: 24px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      width: 360px;
+    }
+
+    h2 {
+      margin-top: 0;
+    }
+
+    input {
+      width: 100%;
+      padding: 8px;
+      margin: 12px 0;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+
+    button {
+      width: 100%;
+      padding: 10px;
+      background-color: #2979ff;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #1565c0;
+    }
+
+    ul {
+      padding-left: 20px;
+    }
+
+    a {
+      text-decoration: none;
+      color: #2979ff;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h2>Hai, zatzd!</h2>
+    <p>Role: user</p>
+    
+    <strong>Tambah IDCH</strong>
+    <input type="text" id="inputIdch" placeholder="Contoh: 120363xxxx@newsletter"/>
+    <button onclick="tambahIDCH()">Tambah IDCH</button>
+
+    <h4>List IDCH (semua)</h4>
+    <ul id="idchList">
+      <li>Loading...</li>
+    </ul>
+
+    <a href="#">Logout</a>
+  </div>
+
+  <script>
+    const url = "https://raw.githubusercontent.com/zurrr-dev/zurrr-dev/main/ChannelIdSettings.json";
+
+    async function loadIDCHList() {
+      try {
+        const response = await fetch(url);
+        const data = await response.json();
+        const list = document.getElementById("idchList");
+        list.innerHTML = "";
+
+        data.channelIds.forEach(id => {
+          const li = document.createElement("li");
+          li.textContent = id;
+          list.appendChild(li);
+        });
+      } catch (error) {
+        document.getElementById("idchList").innerHTML = "<li>Gagal memuat data</li>";
+        console.error("Error fetching data:", error);
+      }
+    }
+
+    function tambahIDCH() {
+      const input = document.getElementById("inputIdch");
+      const value = input.value.trim();
+      if (value) {
+        const list = document.getElementById("idchList");
+        const li = document.createElement("li");
+        li.textContent = value;
+        list.appendChild(li);
+        input.value = "";
+      }
+    }
+
+    loadIDCHList();
+  </script>
+</body>
+</html>
